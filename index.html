@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Unity Web Player | EE AR</title>
+</head>
+<body style="text-align: center; padding: 0; border: 0; margin: 0;">
+<div id="unity-container" style="position: absolute; width: 100%; height: 100%">
+
+  <canvas id="unity-canvas" width='100%' height=100%' tabindex="-1" style="width: 100%; height: 100%; background: #231F20"></canvas>
+</div>
+<script src="Build/Build.loader.js"></script>
+<script>
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    // Mobile device style: fill the whole browser client area with the game canvas:
+    var meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+    document.getElementsByTagName('head')[0].appendChild(meta);
+
+    var canvas = document.querySelector("#unity-canvas");
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.position = "fixed";
+
+    document.body.style.textAlign = "left";
+  }
+  var buildUrl = "Build";
+  var config = {
+    dataUrl: "Build/Build.data.gz",
+    frameworkUrl: "Build/Build.framework.gz",
+    codeUrl: "Build/Build.wasm.gz",
+    streamingAssetsUrl: "StreamingAssets",
+    companyName: "Nexus Studios",
+    productName: "EE AR",
+    productVersion: "0.1",
+
+  };
+
+  var unityInstance;
+  createUnityInstance(document.querySelector("#unity-canvas"), config).then((instance) => {
+    unityInstance = instance;
+
+  }).catch((message) => {
+    alert(message);
+  });
+  // Listen for messages from the parent window
+  window.addEventListener('message', function(event) {
+    //   console.log('Received message:', event.data);
+
+    if (event.data.type === 'unityMessage') {
+      // Ensure the message is from a trusted source if necessary
+      switch (event.data.functionName) {
+              // Existing cases
+        case 'SetText':
+          //  console.log('Setting text:', event.data.argument);
+          if (unityInstance) {
+            //  console.log('Sending message to Unity: SetText', event.data.argument);
+            unityInstance.SendMessage('TextObject', 'SetText', event.data.argument);
+          } else {
+            // console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetCameraXPosition':
+          //  console.log('Setting camera X position:', event.data.argument);
+          if (unityInstance) {
+            // console.log('Sending message to Unity: SetCameraXPosition', event.data.argument);
+            unityInstance.SendMessage('Main Camera', 'SetCameraXPosition', event.data.argument);
+          } else {
+            //  console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetCameraYPosition':
+          // console.log('Setting camera Y position:', event.data.argument);
+          if (unityInstance) {
+            //    console.log('Sending message to Unity: SetCameraYPosition', event.data.argument);
+            unityInstance.SendMessage('Main Camera', 'SetCameraYPosition', event.data.argument);
+          } else {
+            //   console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetCameraZPosition':
+          //  console.log('Setting camera Z position:', event.data.argument);
+          if (unityInstance) {
+            //   console.log('Sending message to Unity: SetCameraZPosition', event.data.argument);
+            unityInstance.SendMessage('Main Camera', 'SetCameraZPosition', event.data.argument);
+          } else {
+            //  console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetCameraRX':
+          //  console.log('Setting camera X rotation:', event.data.argument);
+          if (unityInstance) {
+            //  console.log('Sending message to Unity: SetCameraRX', event.data.argument);
+            unityInstance.SendMessage('Main Camera', 'SetCameraRX', event.data.argument);
+          } else {
+            //  console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetCameraRY':
+          // console.log('Setting camera Y rotation:', event.data.argument);
+          if (unityInstance) {
+            //  console.log('Sending message to Unity: SetCameraRY', event.data.argument);
+            unityInstance.SendMessage('Main Camera', 'SetCameraRY', event.data.argument);
+          } else {
+            // console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetCameraRZ':
+          //   console.log('Setting camera Z rotation:', event.data.argument);
+          if (unityInstance) {
+            //  console.log('Sending message to Unity: SetCameraRZ', event.data.argument);
+            unityInstance.SendMessage('Main Camera', 'SetCameraRZ', event.data.argument);
+          } else {
+            //  console.error('Unity instance is not available.');
+          }
+          break;
+
+              // New cases for PositionModel
+        case 'SetModelXPosition':
+          //   console.log('Setting model X position:', event.data.argument);
+          if (unityInstance) {
+            //    console.log('Sending message to Unity: SetModelXPosition', event.data.argument);
+            unityInstance.SendMessage('ModelPositioner', 'SetModelXPosition', event.data.argument);
+          } else {
+            // console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetModelYPosition':
+          //  console.log('Setting model Y position:', event.data.argument);
+          if (unityInstance) {
+            //    console.log('Sending message to Unity: SetModelYPosition', event.data.argument);
+            unityInstance.SendMessage('ModelPositioner', 'SetModelYPosition', event.data.argument);
+          } else {
+            //     console.error('Unity instance is not available.');
+          }
+          break;
+        case 'SetModelZPosition':
+          //  console.log('Setting model Z position:', event.data.argument);
+          if (unityInstance) {
+            //  console.log('Sending message to Unity: SetModelZPosition', event.data.argument);
+            unityInstance.SendMessage('ModelPositioner', 'SetModelZPosition', event.data.argument);
+          } else {
+            //   console.error('Unity instance is not available.');
+          }
+          break;
+        default:
+              //  console.warn('Unknown function name:', event.data.functionName);
+      }
+    }
+  });
+
+</script>
+</body>
+</html>
